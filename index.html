@@ -18,8 +18,8 @@
         }
         .chart-container {
             position: relative;
-            width: 250px;
-            height: 250px;
+            width: var(--chart-size, 250px);
+            height: var(--chart-size, 250px);
             margin: 0 auto;
         }
         .center-text {
@@ -101,12 +101,16 @@
                 total: parseInt(params.get('total') || 12000),
                 writtenColor: params.get('writtenColor') || '#6D28D9', // Default purple
                 remainingColor: params.get('remainingColor') || '#E5E7EB', // Default light gray
-                hideTotal: params.get('hideTotal') === 'true' // Optional parameter to hide total
+                hideTotal: params.get('hideTotal') === 'true', // Optional parameter to hide total
+                size: params.get('size') || '250' // Default size 250px
             };
         }
 
         // Get the parameters from URL
         const params = getUrlParams();
+        
+        // Set chart size
+        document.documentElement.style.setProperty('--chart-size', params.size + 'px');
         
         // Calculate remaining words
         const remaining = params.total - params.written;
