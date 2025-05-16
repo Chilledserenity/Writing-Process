@@ -102,7 +102,9 @@
                 writtenColor: params.get('writtenColor') || '#6D28D9', // Default purple
                 remainingColor: params.get('remainingColor') || '#E5E7EB', // Default light gray
                 hideTotal: params.get('hideTotal') === 'true', // Optional parameter to hide total
-                size: params.get('size') || '250' // Default size 250px
+                size: params.get('size') || '250', // Default size 250px
+                refresh: params.get('refresh') === 'true' || false, // Auto-refresh flag
+                refreshInterval: parseInt(params.get('refreshInterval') || 60) // Refresh interval in seconds
             };
         }
 
@@ -166,6 +168,16 @@
                 }
             }
         });
+        
+        // Set up auto-refresh if enabled
+        if (params.refresh) {
+            setInterval(function() {
+                // Force cache-busting by adding/updating timestamp
+                const currentUrl = new URL(window.location.href);
+                currentUrl.searchParams.set('timestamp', Date.now());
+                window.location.href = currentUrl.toString();
+            }, params.refreshInterval * 1000);
+        }
     </script>
 </body>
 </html>
